@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/gestionagenda?createDatabaseIfNotExist=true&userSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    username: root
+    password: password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  ## Specify DBMS
+  jpa:
+    database: MYSQL
+    show-sql: true
+
+    # Hibernate DDL Auto (create, create-drop, update)
+    hibernate:
+      ddl-auto: update
+      dialect: org.hibernate.dialect.MySQL5Dialect #MairaDBDialect
+
+  thymeleaf:
+    cache: false #desactivation du cache, il faut le commenter en production
+  #main:
+  #  allow-circular-references: true #cette instruction a été mise pour outre passer le blockage de spring boot qu'il y a entre securityConfig->userDetailsServiceImple->SecurityServiceImple->securityConfig
+
+server:
+  port: 8080

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="template"
+>
+<!-- layout:decorate="template" Permet de charger la page template template.html -->
+<head>
+    <meta charset="UTF-8">
+    <title>Erreur 403</title>
+</head>
+<body>
+<div layout:fragment="content1">
+    <h2 class="text-danger">Vous n'avez pas le droit d'être là.</h2>
+</div>
+</body>
+</html>

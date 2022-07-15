@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+    >
+    <!--
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout Permet de mettre en place la page template
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security" permet d'effectuer la contextualisation
+     -->
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/5.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap-material.min.css"
+    th:href="@{css/bootstrap-material.min.css}">
+    <script src="/webjars/bootstrap/5.1.3/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Agenda</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarColor01">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/user/}">Home
+                            <span class="visually-hidden">(current)</span>
+                        </a>
+                    </li>
+                    <!--<li class="nav-item">
+                        <a class="nav-link" href="#">Features</a>
+                    </li>-->
+                    <li class="nav-item dropdown" >
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Type d'agenda</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" th:href="@{/admin/formTypeAgenda}" sec:authorize="hasAuthority('ADMIN')">Nouveau</a>
+                            <a class="dropdown-item" th:href="@{/user/index}">Liste</a>
+                            <div class="dropdown-divider"></div>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="nav-bar nav" sec:authorize="isAuthenticated()" > <!-- affiche cette section si et seulement si on est authentifié -->
+                    <li class="nav-item dropdown ">
+                        <a style="color: #fff;"  class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                            <span sec:authentication="name"></span>
+                        </a>
+                        <div  class="dropdown-menu" >
+                            <a  class="dropdown-item" th:href="@{/logout}">Logout</a>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="nav-bar nav" sec:authorize="!isAuthenticated()" >
+                    <li class="nav-item" >
+                        <a class="nav-link" th:href="@{/login}">Login
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container mt-2">
+
+        <section layout:fragment="content1">
+
+        </section>
+    </div>
+</body>
+</html>

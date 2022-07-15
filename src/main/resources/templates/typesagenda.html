@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+    layout:decorate="template"
+>
+<!-- layout:decorate="template" Permet de charger la page template template.html -->
+<head>
+    <meta charset="UTF-8">
+    <title>Types agenda</title>
+</head>
+<body>
+    <div layout:fragment="content1">
+        <div class="container mt-2">
+            <div class="card card-header">
+                <h3>Liste des types d'agenda</h3>
+            </div>
+            <div class="card-body">
+                <form action="get" th:action="@{/user/index}">
+                    <label>Rechercher</label>
+                    <input type="text" name="rechercher" th:value="${valeurRechercher}"/>
+                    <button type="submit" class="btn btn-primary">Rechercher</button>
+                </form>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Libelle</th>
+                        <th sec:authorize="hasAuthority('ADMIN')">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="typeAgenda:${listTypesAgenda}">
+                        <td th:text="${typeAgenda.id}"></td>
+                        <td th:text="${typeAgenda.libelle}"></td>
+                        <td>
+                            <a th:href="@{/admin/editeTypeAgenda(id=${typeAgenda.id},rechercher=${valeurRechercher},page=${currentPage})}"
+                               class="btn btn-outline-warning"
+                               sec:authorize="hasAuthority('ADMIN')"
+                            >Modifier</a>
+                            <span sec:authorize="hasAuthority('ADMIN')">|</span>
+                            <a th:href="@{/admin/delete(id=${typeAgenda.id},rechercher=${valeurRechercher},page=${currentPage})}"
+                               class="btn btn-outline-danger"
+                               onclick="return confirm('Voulez-vous vraiment supprimer cet enregistrement ?')"
+                               sec:authorize="hasAuthority('ADMIN')"
+                            >Supprimer</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <ul class="nav nav-pills">
+                    <li th:each="page,status:${pages}">
+                        <a
+                            th:class="${status.index==currentPage?'btn btn-primary ms-1':'btn btn-outline-primary ms-1'}"
+                            th:text="${status.index+1}"
+                            th:href="@{/user/index(page=${status.index},rechercher=${valeurRechercher})}"
+                        ></a>
+                    </li>
+                </ul>
+
+                <!--<div>
+                    <ul class="pagination">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#">&laquo;</a>
+                        </li>
+                        <li class="page-item active">
+                            <a class="page-link" href="#">1</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">2</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">3</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">4</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">5</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">&raquo;</a>
+                        </li>
+                    </ul>
+                </div>-->
+            </div>
+        </div>
+    </div>
+</body>
+</html>
