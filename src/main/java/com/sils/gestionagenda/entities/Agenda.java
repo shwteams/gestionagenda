@@ -1,8 +1,6 @@
 package com.sils.gestionagenda.entities;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -10,12 +8,11 @@ import javax.validation.constraints.NotBlank;
 import java.time.Instant;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
-public class Agenda {
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class Agenda {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @NotBlank
     private String titre;
@@ -25,6 +22,5 @@ public class Agenda {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Instant dateFinRendezVous;
 
-    @ManyToOne
-    private TypeAgenda typeAgenda;
+    private String description;
 }

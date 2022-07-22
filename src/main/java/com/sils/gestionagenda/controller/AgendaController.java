@@ -1,13 +1,18 @@
 package com.sils.gestionagenda.controller;
 
 import com.sils.gestionagenda.entities.Agenda;
+import com.sils.gestionagenda.entities.TypeAgenda;
 import com.sils.gestionagenda.repositories.AgendaRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.validation.Valid;
 
 @Controller
 public class AgendaController {
@@ -26,5 +31,12 @@ public class AgendaController {
         model.addAttribute("valeurRechercher", rechercher);
         return "calendrier";
     }
+
+    /*@GetMapping("/user/formAgenda")
+    public String formTypeAgenda(Model model){
+        model.addAttribute("Agenda", new Agenda());
+        return "formAgenda";
+    }*/
+
 
 }

@@ -1,103 +1,69 @@
 <!DOCTYPE html>
 <html lang="fr" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="template"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="commons/template"
 >
+<!-- layout:decorate="template" Permet de charger la page template template.html -->
 <head>
     <meta charset="UTF-8">
-    <title>Calendrier</title>
-    <link rel="stylesheet" type="text/css" href="/css/bootstrap-material.min.css"
-          th:href="@{/css/bootstrap-material.min.css}">
-    <link href="/fullcalendar/fullcalendar.min.css"
-          th:href="@{/fullcalendar/fullcalendar.min.css}"
-          rel="stylesheet" type="text/css" />
-
-    <!-- App css -->
-    <link href="/css/agenda.css"
-          th:href="@{/css/agenda.css}"
-          rel="stylesheet" type="text/css" />
-
+    <title>Types agenda</title>
 </head>
 <body>
-
-    <div layout:fragment="content1">
-        <div class="row">
-            <div class="col-lg-12">
-
-                <div class="calendar" id="calendar-app">
-                    <div class="calendar--day-view" id="day-view">
-                        <span class="day-view-exit" id="day-view-exit">&times;</span>
-                        <span class="day-view-date" id="day-view-date">MAY 29 2016</span>
-                        <div class="day-view-content">
-                            <div class="day-highlight">
-                                You <span class="day-events" id="day-events">had no events for today</span>. &nbsp; <span tabindex="0" onkeyup="if(event.keyCode != 13) return; this.click();" class="day-events-link" id="add-event" data-date>Add a new event?</span>
-                            </div>
-                            <div class="day-add-event" id="add-day-event-box" data-active="false">
-                                <div class="row">
-                                    <div class="half">
-                                        <label class="add-event-label">
-                                            Name of event
-                                            <input type="text" class="add-event-edit add-event-edit--long" placeholder="New event" id="input-add-event-name">
-
-                                        </label>
-                                    </div>
-                                    <div class="qtr">
-                                        <label class="add-event-label">
-                                            Start Time
-                                            <input type="text" class="add-event-edit" placeholder="8:15" id="input-add-event-start-time" data-options="1,2,3,4,5,6,7,8,9,10,11,12" data-format="datetime">
-                                            <input type="text" class="add-event-edit" placeholder="am" id="input-add-event-start-ampm" data-options="a,p,am,pm">
-                                        </label>
-                                    </div>
-                                    <div class="qtr">
-                                        <label class="add-event-label">
-                                            End Time
-                                            <input type="text" class="add-event-edit" placeholder="9" id="input-add-event-end-time" data-options="1,2,3,4,5,6,7,8,9,10,11,12" data-format="datetime">
-                                            <input type="text" class="add-event-edit" placeholder="am" id="input-add-event-end-ampm" data-options="a,p,am,pm">
-                                        </label>
-                                    </div>
-                                    <div class="half">
-                                        <a onkeyup="if(event.keyCode != 13) return; this.click();" tabindex="0" id="add-event-save" class="event-btn--save event-btn">save</a>
-                                        <a tabindex="0" id="add-event-cancel" class="event-btn--cancel event-btn">cancel</a>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div id="day-events-list" class="day-events-list">
-
-                            </div>
-                            <div class="day-inspiration-quote" id="inspirational-quote">
-                                Every child is an artist.  The problem is how to remain an artist once he grows up. –Pablo Picasso
-                            </div>
-                        </div>
-                    </div>
-                    <div class="calendar--view" id="calendar-view">
-                        <div class="cview__month">
-                            <span class="cview__month-last" id="calendar-month-last">Apr</span>
-                            <span class="cview__month-current" id="calendar-month">May</span>
-                            <span class="cview__month-next" id="calendar-month-next">Jun</span>
-                        </div>
-                        <div class="cview__header">Sun</div>
-                        <div class="cview__header">Mon</div>
-                        <div class="cview__header">Tue</div>
-                        <div class="cview__header">Wed</div>
-                        <div class="cview__header">Thu</div>
-                        <div class="cview__header">Fri</div>
-                        <div class="cview__header">Sat</div>
-                        <div class="calendar--view" id="dates">
-                        </div>
-                    </div>
-                    <div class="footer">
-                        <span><span id="footer-date" class="footer__link">Today is May 30</span></span>
-                    </div>
-                </div>
-            </div>
-            <!-- end col-12 -->
+<div layout:fragment="contente_page">
+    <div class="container mt-2">
+        <div class="card card-header">
+            <h3>Liste des agendas</h3>
         </div>
+        <div class="card-body">
+            <form action="get" th:action="@{/user/agenda}">
+                <label>Rechercher</label>
+                <input type="text" name="rechercher" th:value="${valeurRechercher}"/>
+                <button type="submit" class="btn btn-primary">Rechercher</button>
+            </form>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Libelle</th>
+                    <th>Date et heure début</th>
+                    <th>Date et heure fin</th>
+                    <th sec:authorize="hasAuthority('USER')">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="Agenda:${listAgendas}">
+                    <td th:text="${Agenda.id}"></td>
+                    <td th:text="${Agenda.libelle}"></td>
+                    <td th:text="${Agenda.dateDebutRendezVous}"></td>
+                    <td th:text="${Agenda.dateFinRendezVous}"></td>
+                    <td>
+                        <a th:href="@{/user/editeAgenda(id=${Agenda.id},rechercher=${valeurRechercher},page=${currentPage})}"
+                           class="btn btn-outline-warning"
+                           sec:authorize="hasAuthority('USER')"
+                        >Modifier</a>
+                        <span sec:authorize="hasAuthority('USER')">|</span>
+                        <a th:href="@{/user/delete(id=${Agenda.id},rechercher=${valeurRechercher},page=${currentPage})}"
+                           class="btn btn-outline-danger"
+                           onclick="return confirm('Voulez-vous vraiment supprimer cet enregistrement ?')"
+                           sec:authorize="hasAuthority('USER')"
+                        >Supprimer</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <ul class="nav nav-pills">
+                <li th:each="page,status:${pages}">
+                    <a
+                        th:class="${status.index==currentPage?'btn btn-primary ms-1':'btn btn-outline-primary ms-1'}"
+                        th:text="${status.index+1}"
+                        th:href="@{/user/index(page=${status.index},rechercher=${valeurRechercher})}"
+                    ></a>
+                </li>
+            </ul>
 
+        </div>
     </div>
-
-    <script type="text/javascript" src="/js/agenda.js"
-        th:src="@{/js/agenda.js}"
-    ></script>
+</div>
 </body>
 </html>

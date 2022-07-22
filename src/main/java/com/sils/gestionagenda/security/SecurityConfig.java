@@ -20,8 +20,8 @@ import javax.sql.DataSource;
 @Configuration
 @EnableWebSecurity //pour dire qu'on veut appliquer la securité
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private DataSource dataSource; //permet de faire l'injection de dépences de la base de données configuré dans le fichier application.yml
+   /* @Autowired
+    private DataSource dataSource;*/ //permet de faire l'injection de dépences de la base de données configuré dans le fichier application.yml
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
     /*@Autowired
