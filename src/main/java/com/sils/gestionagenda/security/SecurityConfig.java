@@ -58,13 +58,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
-    //permet de spécifier les droit d'accès
+    //permet de spécifier les droits d'accès
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.formLogin() //permet de dire a spring security qu'il faut autiliser la config par defaut
                 //.loginPage("/login") //permet de dire a spring security que je veux creer mon formulaire d'authentification
-                ;
-        http.authorizeRequests().antMatchers("/home").permitAll(); //permet de donner accès à tout le monde a cette page
+
+                .loginPage("/login")
+                .permitAll()
+                .and()
+                .logout().permitAll();
+        http.authorizeRequests().antMatchers("/","/home").permitAll(); //permet de donner accès à tout le monde a cette page
         http.authorizeRequests()
                 .antMatchers("/admin/**")
                         .hasAuthority("ADMIN");
@@ -74,8 +78,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .hasAuthority("USER");
                 //.hasRole("USER"); //utiliser pour les autres type de gestion utilisateur (IN MEMORY et JDBC)
         http.authorizeRequests().antMatchers("/webjars/**").permitAll();
-        http.authorizeRequests().antMatchers("/css/**").permitAll();
-        http.authorizeRequests().anyRequest().authenticated(); //permet de dire que toutes les requêtes HTTP necessite une authentification
+        http.authorizeRequests().antMatchers("/dist/**").permitAll();
+        http.authorizeRequests().antMatchers("/plugins/**").permitAll();
+
+
+        http.authorizeRequests().anyRequest().authenticated();//permet de dire que toutes les requêtes HTTP necessite une authentification
+
 
         //permet d'afficher les execptions en cas d'erreurs
         http.exceptionHandling().accessDeniedPage("/403");
